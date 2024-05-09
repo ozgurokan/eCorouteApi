@@ -1,4 +1,3 @@
-
 class Graph():
     def __init__(self, vertices):
         self.V = vertices
@@ -92,17 +91,10 @@ g.graph = [
 ]
 source_node = 0
 # Database Erişimi İçin Gerekli Bilgiler
-mydb = pymysql.connect(
-    host = "localhost",
-    user = "root",
-    password = "*****",
-    database = "*****"
-)
+
 # Database'den Verilerin Koda Aktarılması için Kullanılan SQL KOdları
-mycursor = mydb.cursor()
-sql = "SELECT ID FROM trashcans WHERE fullness = 1"
-mycursor.execute(sql)
-results = mycursor.fetchall()
+
+results = list()
 specific_nodes = [result[0] for result in results]
 route = []
 while specific_nodes:
@@ -126,8 +118,7 @@ print("Yol: " + " -> ".join(unique_route))
 
 # Düğümlere Ait Bilgilere Erişim SQL Sorguları
 sql = f"SELECT ID, location FROM trashcans WHERE ID IN ({','.join(unique_route)})"
-mycursor.execute(sql)
-location_results = mycursor.fetchall()
+location_results = list()
 location_dict = {row[0]: row[1] for row in location_results}
 # Oklar ile Metinsel Yazımın Gerçekleştirildiği Satır
 location_string = " -> ".join([location_dict[int(node)] for node in unique_route])
